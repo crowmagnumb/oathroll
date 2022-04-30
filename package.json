@@ -1,0 +1,24 @@
+{
+    "name": "oathroll",
+    "version": "1.0.0",
+    "description": "",
+    "main": "bot.js",
+    "scripts": {
+        "buildbot": "tsc src/bot.ts",
+        "buildcmd": "tsc src/cmd.ts",
+        "runbot": "node src/bot.js",
+        "runcmd": "node src/cmd.js",
+        "bot": "buildbot && tsc-watch --noClear -p ./tsconfig.bot.json --onSuccess \"node src/bot.js\"",
+        "cmd": "buildcmd && tsc-watch --noClear -p ./tsconfig.cmd.json --onSuccess \"node src/cmd.js\""
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "discord.js": "^13.6.0"
+    },
+    "devDependencies": {
+        "tsc-watch": "^5.0.3",
+        "typescript": "^4.6.4",
+        "yaml": "^2.0.1"
+    }
+}

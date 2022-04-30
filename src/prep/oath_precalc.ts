@@ -19,4 +19,4 @@ for (let awb = 0; awb <= 9; awb++) {
     }
 }
 
-fs.writeFileSync("../assets/pcts.json", JSON.stringify(pcts));
+fs.writeFileSync("src/assets/pcts.json", JSON.stringify(pcts));

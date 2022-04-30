@@ -1,3 +1,11 @@
+import * as fs from "fs";
+
+type OathBattle = {
+    attackWarbands: number;
+    defenseDice: number;
+    defenseWarbands: number;
+};
+
 type DefenseValue = {
     shields?: number;
     doubles?: boolean;
@@ -25,6 +33,55 @@ const attackFaces: AttackValue[] = [
     { swords: 1 },
     { swords: 2, skulls: 1 },
 ];
+
+function getIntValue(values: string[], index: number) {
+    if (values.length > index) {
+        return parseInt(values[index]);
+    }
+    return 0;
+}
+
+export function parseOathAttack(values: string[]) {
+    return {
+        attackWarbands: getIntValue(values, 0),
+        defenseDice: getIntValue(values, 1),
+        defenseWarbands: getIntValue(values, 2),
+    } as OathBattle;
+}
+
+export function readPcts(fn: (pctsArr: number[][][][]) => void) {
+    fs.readFile("src/assets/pcts.json", "utf8", (err, data) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+
+        fn(JSON.parse(data) as number[][][][]);
+    });
+}
+
+export function getChances(pctsArr: number[][][][], battle: OathBattle) {
+    let pcts: number[];
+    if (
+        battle.attackWarbands > 10 ||
+        battle.defenseDice > 10 ||
+        battle.defenseWarbands > 10 ||
+        battle.attackWarbands < 1 ||
+        battle.defenseDice < 1
+    ) {
+        pcts = calcPercents(
+            battle.attackWarbands,
+            battle.defenseDice,
+            battle.defenseWarbands
+        );
+    } else {
+        pcts =
+            pctsArr[battle.attackWarbands - 1][battle.defenseDice - 1][
+                battle.defenseWarbands
+            ];
+    }
+    return pcts.map((pct, index) => `${index}: ${pct}`).join("  ");
+}
 
 export function rollIndex() {
     return Math.floor(Math.random() * 6);

@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { calcPercents } from "../oath_utils";
+import { calcPercents, MIN_DICE, MAX_PRECALC_NUM } from "../oath_utils";
 
 //
 // Note: awb starts at zero so that array storage is more efficient BUT
@@ -7,9 +7,9 @@ import { calcPercents } from "../oath_utils";
 // See the (awb + 1) when calling percents. Same with dfd, there is always at least one.
 //
 let pcts: number[][][][] = [];
-for (let awb = 0; awb <= 9; awb++) {
+for (let awb = MIN_DICE - 1; awb < MAX_PRECALC_NUM; awb++) {
     pcts[awb] = [];
-    for (let dfd = 0; dfd <= 9; dfd++) {
+    for (let dfd = MIN_DICE - 1; dfd < MAX_PRECALC_NUM; dfd++) {
         pcts[awb][dfd] = [];
         for (let dwb = 0; dwb <= 10; dwb++) {
             process.stdout.write(`${awb} - ${dfd} - ${dwb}`.padEnd(50) + "\r");

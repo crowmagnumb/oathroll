@@ -3,7 +3,7 @@
     "extends": "./tsconfig.json",
     "compilerOptions": {
         "outDir": "./dist/cmd",
-        "types": []
+        "types": ["node"]
     },
     "files": ["./src/cmd.ts"]
 }

@@ -4,12 +4,12 @@
     "description": "",
     "main": "bot.js",
     "scripts": {
-        "buildbot": "tsc src/bot.ts",
-        "buildcmd": "tsc src/cmd.ts",
-        "runbot": "node src/bot.js",
-        "runcmd": "node src/cmd.js",
-        "bot": "buildbot && tsc-watch --noClear -p ./tsconfig.bot.json --onSuccess \"node src/bot.js\"",
-        "cmd": "buildcmd && tsc-watch --noClear -p ./tsconfig.cmd.json --onSuccess \"node src/cmd.js\""
+        "build-bot": "tsc src/bot.ts",
+        "build-cmd": "tsc src/cmd.ts",
+        "run-bot": "node src/bot.js",
+        "run-cmd": "node src/cmd.js",
+        "serv-bot": "tsc src/bot.ts && tsc-watch --noClear -p ./tsconfig.bot.json --onSuccess \"node src/bot.js\"",
+        "serv-cmd": "tsc src/cmd.ts && tsc-watch --noClear -p ./tsconfig.cmd.json --onSuccess \"node src/cmd.js\""
     },
     "author": "",
     "license": "ISC",
@@ -17,6 +17,7 @@
         "discord.js": "^13.6.0"
     },
     "devDependencies": {
+        "@types/node": "^17.0.31",
         "tsc-watch": "^5.0.3",
         "typescript": "^4.6.4",
         "yaml": "^2.0.1"

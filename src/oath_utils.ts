@@ -169,5 +169,5 @@ export function getChances(pctsArr: number[][][][], battle: OathBattle) {
     return scs
         .reverse()
         .map((sc) => `${sc.chance}% -> ${sc.units}`)
-        .join(", ");
+        .join(",  ");
 }

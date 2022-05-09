@@ -3,24 +3,29 @@ import * as fs from "fs";
 export const MAX_PRECALC_NUM = 10;
 export const MIN_DICE = 1;
 // const DIE_SPACER = " \u{2012} ";
-const DIE_SPACER = " \u{2B1E} ";
+// const DIE_SPACER = " \u{2B1E} ";
+const DIE_SPACER = " \u{26AC} ";
 // const ATT_DEF_SPACER = "   \u{27FA}   ";
-const ATT_DEF_SPACER = "  vs.  ";
-const THEREFORE = "   \u{27FE}   ";
+// const THEREFORE = "   \u{27FE}   ";
+const THEREFORE = "   \u{27AF}   ";
 const GLYPH_SKULL = "\u{1F480}";
 const GLYPH_SHIELD = "\u{1F6E1}";
-const GLYPH_BLANK = "\u{25FB}";
+// const GLYPH_BLANK = "\u{25FB}";
+const GLYPH_BLANK = "\u{2B1C}";
 const GLYPH_SWORD = "\u{1F5E1}";
-const GLYPH_HALF = "\u{00BD}";
-const GLYPH_DOUBLER = "\u{2715}2";
-// const GLYPH_DOUBLE_SWORD = "\u{2694}";
-const GLYPH_DOUBLE_SWORD = GLYPH_SWORD + GLYPH_SWORD;
+const GLYPH_HALF_SWORD = "\u{00BD}\u{1F5E1}";
+// const GLYPH_HALF_SWORD = "\u{1F5E1}\u{2082}";
+// const GLYPH_DOUBLER = "\u{2715}2";
+// const GLYPH_DOUBLER = "\u{2461}";
+const GLYPH_DOUBLER = "\u{274E}";
+const GLYPH_DOUBLE_SWORD = "\u{2694}";
+// const GLYPH_DOUBLE_SWORD = GLYPH_SWORD + GLYPH_SWORD;
 
 type OathBattle = {
     attackWarbands: number;
     defenseDice: number;
     defenseWarbands: number;
-    cards: string[];
+    cards?: string[];
 };
 
 //
@@ -60,7 +65,7 @@ const DEFENSE_DIE: DefenseFace[] = [
     { shields: 0, doubles: true, glyph: GLYPH_DOUBLER, sort: 2 },
 ];
 
-const ATT_HALF = { swords: 0.5, glyph: GLYPH_HALF + GLYPH_SWORD } as AttackFace;
+const ATT_HALF = { swords: 0.5, glyph: GLYPH_HALF_SWORD } as AttackFace;
 const ATT_WHOLE = { swords: 1, glyph: GLYPH_SWORD } as AttackFace;
 const ATTACK_DIE: AttackFace[] = [
     ATT_HALF,
@@ -258,13 +263,25 @@ function defenseGlyphs(faces: DefenseFace[]) {
 export function runCommand(
     pctsArr: number[][][][],
     cmd: string,
-    callback: (result: string) => void
+    callback: (result: string) => void,
+    prefix: string = ""
 ) {
+    cmd = cmd.substring(prefix.length);
     const bits = cmd.split(" ");
     const fn = bits[0];
     const params = bits.slice(1);
 
     switch (fn) {
+        case "attack": {
+            let dice = getIntValue(params, 0);
+            callback(attackGlyphs(rollAttack(dice)));
+            break;
+        }
+        case "defense": {
+            let dice = getIntValue(params, 0);
+            callback(defenseGlyphs(rollDefense(dice)));
+            break;
+        }
         case "battle": {
             // console.log(values);
             const battle = parseOathAttack(params);
@@ -301,14 +318,14 @@ export function runCommand(
                 skullGlyphs = "";
             }
             const cards = battle.cards?.length
-                ? " + " + battle.cards.join(", ")
+                ? "\n\nCards:  " + battle.cards.join(", ")
                 : "";
             callback(
-                `( ${attackGlyphs(
+                `Attack:  ${attackGlyphs(
                     attackFaces
-                )} )${ATT_DEF_SPACER}( ${defenseGlyphs(
+                )}\n\nDefense:  ${defenseGlyphs(
                     defenseFaces
-                )} )${cards}${THEREFORE}(${attack} - ${defense})${THEREFORE}${result}${skullGlyphs}`
+                )}${cards}\n\n${attack} - ${defense}${THEREFORE}${result}${skullGlyphs}`
             );
             break;
         }
@@ -320,31 +337,25 @@ export function runCommand(
             callback(getChances(pctsArr, battle));
             break;
         }
-        case "rollattack": {
-            let dice = getIntValue(params, 0);
-            callback(attackGlyphs(rollAttack(dice)));
-            break;
-        }
-        case "rolldefense": {
-            let dice = getIntValue(params, 0);
-            callback(defenseGlyphs(rollDefense(dice)));
-            break;
-        }
         case "help": {
             const helps: string[] = [];
             helps.push(
-                "rollattack <#dice>\n\tRolls that number of attack dice."
+                prefix +
+                    "attack <#dice>\n\tRolls that number of attack dice. Can be used for manual battles or for cards that ask for attack dice to be rolled."
             );
             helps.push(
-                "rolldefense <#dice>\n\tRolls that number of defense dice."
+                prefix +
+                    "defense <#dice>\n\tRolls that number of defense dice. Can be used for manual battles or for cards that ask for attack dice to be rolled."
             );
             helps.push(
-                "battle <#attackWarbands> <#defenseDice> <#defenseWarbands> <cards?>\n\tRolls for an attack. e.g. 'battle 4 2 3', 'battle 6 3 0 rustingray'. Where cards is a space delimited list of special cards in play, one of 'rustingray', 'wartortoise-attack', 'wartortoise-defense"
+                prefix +
+                    "battle <#attackWarbands> <#defenseDice> <#defenseWarbands> <cards?>\n\tRolls for an attack. e.g. 'battle 4 2 3', 'battle 6 3 0 rustingray'. Where cards is a space delimited list of special cards in play, one of 'rustingray', 'wartortoise-attack', 'wartortoise-defense"
             );
             helps.push(
-                "chance <#attackWarbands> <#defenseDice> <#defenseWarbands> <cards?>\n\tGives you percent chances of success for given battle conditions.\n\te.g. chance 4 2 3\n\t100% -> 4,  99.4% -> 3,  91.9% -> 2,  67.6% -> 1,  22.6% -> 0\n\tYou have a 100% chance of winning if you are willing to lose 4 or more units (to skulls and/or sacrifice), a 91.9% chance of winning while losing 2 units, and you have a 22.6% chance of succeeding without losing any units."
+                prefix +
+                    "chance <#attackWarbands> <#defenseDice> <#defenseWarbands> <cards?>\n\tGiven the exact same input as battle this shows you the percent chances of success depending on unit loss.\n\te.g. chance 4 2 3\n\t100% -> 4,  99.4% -> 3,  91.9% -> 2,  67.6% -> 1,  22.6% -> 0\n\tYou have a 100% chance of winning if you are willing to lose 4 or more units (to skulls and/or sacrifice), a 91.9% chance of winning while losing 2 units, and you have a 22.6% chance of succeeding without losing any units."
             );
-            helps.push("end\n\tRolls a D6 for end game check.");
+            helps.push(prefix + "end\n\tRolls a D6 for end game check.");
             callback(helps.join("\n\n"));
             break;
         }

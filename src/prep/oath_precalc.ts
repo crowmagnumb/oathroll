@@ -13,7 +13,11 @@ for (let awb = MIN_DICE - 1; awb < MAX_PRECALC_NUM; awb++) {
         pcts[awb][dfd] = [];
         for (let dwb = 0; dwb <= 10; dwb++) {
             process.stdout.write(`${awb} - ${dfd} - ${dwb}`.padEnd(50) + "\r");
-            pcts[awb][dfd][dwb] = calcPercents(awb + 1, dfd + 1, dwb);
+            pcts[awb][dfd][dwb] = calcPercents({
+                attackWarbands: awb + 1,
+                defenseDice: dfd + 1,
+                defenseWarbands: dwb,
+            });
             // console.log(awb, dfd, dwb, pcts[awb][dfd][dwb]);
         }
     }

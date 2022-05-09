@@ -5,6 +5,8 @@ import { parse } from "yaml";
 import { Client, Intents } from "discord.js";
 import { readPcts, runCommand } from "./oath_utils";
 
+const PREFIX = "oath-";
+
 type BotConfig = {
     discord: { token: string };
 };
@@ -27,15 +29,13 @@ readPcts((pctsArr) => {
 
     client.on("messageCreate", (msg) => {
         const message = msg.content.toLowerCase();
-        if (!message.startsWith("oath-")) {
+        if (!message.startsWith(PREFIX)) {
             return;
         }
         //
         // Strip off the leading "oath-"
         //
-        runCommand(pctsArr, message.substring(5), (result) =>
-            msg.reply(result)
-        );
+        runCommand(pctsArr, message, (result) => msg.reply(result), PREFIX);
     });
 
     client.login(config.discord.token);

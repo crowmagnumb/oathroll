@@ -1,0 +1,23 @@
+# If using systemd put this file in /etc/systemd/system, run "systemctl daemon-reload",
+# and then "systmctl start happywhale_web". Any change to this file has to be
+# followed with "systemctl daemon-reload" to incorporate changes into systemd.
+
+[Unit]
+Description=Oathroll Discord Bot
+After=network.target
+
+[Service]
+Type=simple
+
+User=<user>
+Group=<group>
+
+WorkingDirectory=<OATHROLL_DIR>
+
+ExecStart=/usr/bin/node src/bot.js
+
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

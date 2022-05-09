@@ -19,3 +19,7 @@ node src/prep/oath_precalc.js
 ## TODO
 
 -   Add service to ensure bot is always running on beta after reboot.
+-   Vassal Module
+    -   Try creating a Vassal modlue from scratch to see how that is done.
+    -   Use github to store Vassal module for sharing with others.
+    -   What is the Vassal Module Editor. Where do you get that?

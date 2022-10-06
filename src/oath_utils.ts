@@ -341,21 +341,21 @@ export function runCommand(
             const helps: string[] = [];
             helps.push(
                 prefix +
+                    "chance <#attackWarbands> <#defenseDice> <#defenseWarbands> <cards?>\n\tGiven the exact same input as battle this shows you the percent chances of success depending on unit loss.\n\te.g. chance 4 2 3\n\t100% -> 4,  99.4% -> 3,  91.9% -> 2,  67.6% -> 1,  22.6% -> 0\n\tYou have a 100% chance of winning if you are willing to lose 4 or more units (to skulls and/or sacrifice), a 91.9% chance of winning while losing 2 units, and you have a 22.6% chance of succeeding without losing any units."
+            );
+            helps.push(
+                prefix +
+                    "battle <#attackWarbands> <#defenseDice> <#defenseWarbands> <cards?>\n\tRolls for an attack. e.g. 'battle 4 2 3', 'battle 6 3 0 rustingray'. Where cards is a space delimited list of special cards in play, one of 'rustingray', 'wartortoise-attack', 'wartortoise-defense"
+            );
+            helps.push(prefix + "end\n\tRolls a D6 for end game check.");
+            helps.push(
+                prefix +
                     "attack <#dice>\n\tRolls that number of attack dice. Can be used for manual battles or for cards that ask for attack dice to be rolled."
             );
             helps.push(
                 prefix +
                     "defense <#dice>\n\tRolls that number of defense dice. Can be used for manual battles or for cards that ask for attack dice to be rolled."
             );
-            helps.push(
-                prefix +
-                    "battle <#attackWarbands> <#defenseDice> <#defenseWarbands> <cards?>\n\tRolls for an attack. e.g. 'battle 4 2 3', 'battle 6 3 0 rustingray'. Where cards is a space delimited list of special cards in play, one of 'rustingray', 'wartortoise-attack', 'wartortoise-defense"
-            );
-            helps.push(
-                prefix +
-                    "chance <#attackWarbands> <#defenseDice> <#defenseWarbands> <cards?>\n\tGiven the exact same input as battle this shows you the percent chances of success depending on unit loss.\n\te.g. chance 4 2 3\n\t100% -> 4,  99.4% -> 3,  91.9% -> 2,  67.6% -> 1,  22.6% -> 0\n\tYou have a 100% chance of winning if you are willing to lose 4 or more units (to skulls and/or sacrifice), a 91.9% chance of winning while losing 2 units, and you have a 22.6% chance of succeeding without losing any units."
-            );
-            helps.push(prefix + "end\n\tRolls a D6 for end game check.");
             callback(helps.join("\n\n"));
             break;
         }

@@ -20,6 +20,19 @@ node src/prep/oath_precalc.js
 
 https://discord.com/developers/applications
 
+To install the bot into your server add this link...
+
+```
+https://discord.com/api/oauth2/authorize?client_id=969401641285591040&permissions=2048&scope=bot
+```
+
+It was obtained by going to the oathroll app in the developer section and selecting the OAuth2 --> URL Generator in the menu. Then select ...
+
+scopes --> bot
+bot permissions --> Send Messages
+
+and it should provide you with the above url to copy.
+
 ## TODO
 
 -   Vassal Module

@@ -16,10 +16,13 @@ Because I didn't yet add my ssh key to the repo. I currently have to delete the 
 
 ```sh
 cd ~/dev
-rm -rf oathroll
+rm -rf oathroll_backup
+mv oathroll oathroll_backup
 git clone https://github.com/crowmagnumb/oathroll.git
+cp oathroll_backup/config.yml oathroll
 cd oathroll
 npm i
+npm run build:bot
 sudo systemctl restart oathroll
 ```
 

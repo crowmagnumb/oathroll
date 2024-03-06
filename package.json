@@ -4,12 +4,12 @@
     "description": "",
     "main": "bot.js",
     "scripts": {
-        "build-bot": "tsc src/bot.ts",
-        "build-cmd": "tsc src/cmd.ts",
-        "run-bot": "node src/bot.js",
-        "run-cmd": "node src/cmd.js",
-        "serv-bot": "tsc src/bot.ts && tsc-watch --noClear -p ./tsconfig.bot.json --onSuccess \"node src/bot.js\"",
-        "serv-cmd": "tsc src/cmd.ts && tsc-watch --noClear -p ./tsconfig.cmd.json --onSuccess \"node src/cmd.js\""
+        "build:bot": "tsc src/bot.ts",
+        "build:cmd": "tsc src/cmd.ts",
+        "run:bot": "node src/bot.js",
+        "run:cmd": "node src/cmd.js",
+        "serv:bot": "tsc src/bot.ts && tsc-watch --noClear -p ./tsconfig.bot.json --onSuccess \"node src/bot.js\"",
+        "serv:cmd": "tsc src/cmd.ts && tsc-watch --noClear -p ./tsconfig.cmd.json --onSuccess \"node src/cmd.js\""
     },
     "author": "",
     "license": "ISC",

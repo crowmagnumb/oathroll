@@ -15,9 +15,10 @@ const GLYPH_BLANK = "\u{2B1C}";
 const GLYPH_SWORD = "\u{1F5E1}";
 const GLYPH_HALF_SWORD = "\u{00BD}\u{1F5E1}";
 // const GLYPH_HALF_SWORD = "\u{1F5E1}\u{2082}";
-// const GLYPH_DOUBLER = "\u{2715}2";
+// const GLYPH_DOUBLER = "\u{2715} 2";
 // const GLYPH_DOUBLER = "\u{2461}";
-const GLYPH_DOUBLER = "\u{274E}";
+// const GLYPH_DOUBLER = "\u{274E}";
+const GLYPH_DOUBLER = "\u{2A02} 2";
 const GLYPH_DOUBLE_SWORD = "\u{2694}";
 // const GLYPH_DOUBLE_SWORD = GLYPH_SWORD + GLYPH_SWORD;
 
@@ -109,16 +110,11 @@ function rollDefense(num: number) {
     return faces;
 }
 
-function sumDefense(
-    faces: DefenseFace[],
-    defensiveWarbands: number,
-    cards: string[]
-) {
+function sumDefenseFaces(faces: DefenseFace[], ignoreDoubles?: boolean) {
     let shields = 0;
     let doubles = 0;
     for (const face of faces) {
-        const ignore =
-            face.shields === 2 && cards?.includes("wartortoise-attack");
+        const ignore = face.shields === 2 && ignoreDoubles;
         if (!ignore) {
             shields += face.shields || 0;
         }
@@ -126,7 +122,18 @@ function sumDefense(
             doubles++;
         }
     }
-    return (shields *= Math.pow(2, doubles)) + defensiveWarbands;
+    return (shields *= Math.pow(2, doubles));
+}
+
+function sumDefense(
+    faces: DefenseFace[],
+    defensiveWarbands: number,
+    cards: string[]
+) {
+    return (
+        sumDefenseFaces(faces, cards?.includes("wartortoise-attack")) +
+        defensiveWarbands
+    );
 }
 
 function rollAttack(num: number) {
@@ -137,7 +144,7 @@ function rollAttack(num: number) {
     return faces;
 }
 
-function sumAttack(faces: AttackFace[], cards: string[]) {
+function sumAttack(faces: AttackFace[], cards?: string[]) {
     let swords = 0;
     for (const face of faces) {
         const ignore =
@@ -274,12 +281,16 @@ export function runCommand(
     switch (fn) {
         case "attack": {
             let dice = getIntValue(params, 0);
-            callback(attackGlyphs(rollAttack(dice)));
+            const faces = rollAttack(dice);
+            callback(`${attackGlyphs(faces)}${THEREFORE}${sumAttack(faces)}`);
             break;
         }
         case "defense": {
             let dice = getIntValue(params, 0);
-            callback(defenseGlyphs(rollDefense(dice)));
+            const faces = rollDefense(dice);
+            callback(
+                `${defenseGlyphs(faces)}${THEREFORE}${sumDefenseFaces(faces)}`
+            );
             break;
         }
         case "battle": {

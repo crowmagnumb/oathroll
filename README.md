@@ -9,6 +9,20 @@ discord:
     token: <bot_token>
 ```
 
+## Deploy
+
+Currently hosting on beta.happywhale.com in my /home/ken/dev/oathroll. There is a service on that machine to run it.
+Because I didn't yet add my ssh key to the repo. I currently have to delete the old. do ...
+
+```sh
+cd ~/dev
+rm -rf oathroll
+git clone https://github.com/crowmagnumb/oathroll.git
+cd oathroll
+npm i
+sudo systemctl restart oathroll
+```
+
 ## Precalculate common array of attack/defense dice for speed
 
 ```

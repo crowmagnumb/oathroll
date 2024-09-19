@@ -118,7 +118,7 @@ export function sumDefenseFaces(faces: DefenseFace[], ignoreDoubles?: boolean) {
     for (const face of faces) {
         const ignore = face.shields === 2 && ignoreDoubles;
         if (!ignore) {
-            shields += face.shields || 0;
+            shields += face.shields ?? 0;
         }
         if (face.doubles) {
             doubles++;

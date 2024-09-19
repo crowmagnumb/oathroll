@@ -104,7 +104,7 @@ function rollIndex() {
     return Math.floor(Math.random() * 6);
 }
 
-function rollDefense(num: number) {
+export function rollDefense(num: number) {
     const faces: DefenseFace[] = [];
     for (let ii = 0; ii < num; ii++) {
         faces.push(DEFENSE_DIE[rollIndex()]);
@@ -112,7 +112,7 @@ function rollDefense(num: number) {
     return faces;
 }
 
-function sumDefenseFaces(faces: DefenseFace[], ignoreDoubles?: boolean) {
+export function sumDefenseFaces(faces: DefenseFace[], ignoreDoubles?: boolean) {
     let shields = 0;
     let doubles = 0;
     for (const face of faces) {
